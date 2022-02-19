@@ -62,6 +62,7 @@ static __weak PCSX2GameCore *_current;
 {
 	if (self = [super init]) {
 		VMManager::InitializeMemory();
+		_current = self;
 	}
 	return self;
 }
@@ -125,11 +126,11 @@ static __weak PCSX2GameCore *_current;
 	
 	EmuConfig.Mcd[0].Enabled = true;
 	EmuConfig.Mcd[0].Type = MemoryCardType::Folder;
-	EmuConfig.Mcd[0].Filename = "Memory folder 1";
+	EmuConfig.Mcd[0].Filename = "Memory folder 1.ps2";
 
 	EmuConfig.Mcd[1].Enabled = true;
 	EmuConfig.Mcd[1].Type = MemoryCardType::Folder;
-	EmuConfig.Mcd[1].Filename = "Memory folder 2";
+	EmuConfig.Mcd[1].Filename = "Memory folder 2.ps2";
 	
 	// TODO: select based on loaded game's region?
 	EmuConfig.BaseFilenames.Bios = "scph39001.bin";
@@ -437,7 +438,7 @@ bool Host::BeginPresentFrame(bool frame_skip)
 {
 	GET_CURRENT_OR_RETURN(false);
 	
-	return false;
+	return true;
 }
 
 void Host::EndPresentFrame()
@@ -461,7 +462,7 @@ void Host::UpdateHostDisplay()
 
 #pragma mark -
 
-const IConsoleWriter* PatchesCon = &ConsoleWriter_Null;
+const IConsoleWriter* PatchesCon = &ConsoleWriter_Stdout;
 
 void LoadAllPatchesAndStuff(const Pcsx2Config& cfg)
 {
